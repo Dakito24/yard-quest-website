@@ -1,0 +1,16 @@
+{
+  "name": "yard-quest-website",
+  "version": "1.0.0",
+  "description": "Simple landing page and deep link handler for Yard Quest app",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": ["yard-quest", "deep-linking"],
+  "author": "Yard Quest Team",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
