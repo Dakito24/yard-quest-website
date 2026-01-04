@@ -4,39 +4,46 @@
 
 ### Option 1: Using Docker Compose
 
+**Important:** Modern Docker (v20+) uses `docker compose` (with space) instead of `docker-compose` (with hyphen)
+
 ```bash
 # Stop the current container
-docker-compose down
+docker compose down
 
 # Rebuild the image (force no cache)
-docker-compose build --no-cache
+docker compose build --no-cache
 
 # Start the new container
-docker-compose up -d
+docker compose up -d
 
 # Verify it's running
-docker-compose ps
-docker-compose logs -f web
+docker compose ps
+docker compose logs -f web
 ```
 
-### Option 2: Using Docker Directly
+### Option 2: Manual Docker Commands (if docker compose not available)
 
 ```bash
-# Stop and remove old container
+# First, find the container name
+docker ps -a | grep yard-quest
+
+# Stop and remove old container (use your actual container name)
 docker stop yard-quest-website
 docker rm yard-quest-website
 
 # Remove old image to force rebuild
 docker rmi yard-quest-website-web
 
-# Rebuild
-docker build --no-cache -t yard-quest-website-web .
+# Rebuild using compose (recommended)
+docker compose build --no-cache
+docker compose up -d
 
-# Run new container
-docker run -d --name yard-quest-website -p 3000:3000 --restart unless-stopped yard-quest-website-web
+# OR build manually (not recommended, use compose instead)
+# docker build --no-cache -t yard-quest-website-web .
+# docker run -d --name yard-quest-website -p 3000:3000 --restart unless-stopped yard-quest-website-web
 
 # Check logs
-docker logs -f yard-quest-website
+docker compose logs -f web
 ```
 
 ## Verify Logo is Loaded
@@ -54,7 +61,7 @@ docker exec yard-quest-website ls -lh /app/public/logo.png
 
 ```bash
 # Build and test locally first
-docker-compose up --build
+docker compose up --build
 
 # In another terminal, test the logo endpoint
 curl -I http://localhost:3000/logo.png
@@ -69,20 +76,31 @@ curl -I http://localhost:3000/logo.png
 # SSH into your server
 ssh your-server
 
+# Navigate to project directory
+cd ~/yard-quest-website
+
 # Pull latest code
-cd /path/to/yard-quest-website
 git pull origin main
 
 # Rebuild and restart
-docker-compose down
-docker-compose build --no-cache
-docker-compose up -d
+docker compose down
+docker compose build --no-cache
+docker compose up -d
 
-# Verify
+# Verify the logo is accessible
 curl -I https://yard-quest.com/logo.png
+# Should return: HTTP/1.1 200 OK
+
+# Check container logs
+docker compose logs -f web
 ```
 
 ## Common Issues
+
+### Issue: `docker-compose: command not found`
+- **Cause**: Modern Docker (v20+) uses `docker compose` (space) not `docker-compose` (hyphen)
+- **Fix**: Use `docker compose` instead of `docker-compose`
+- **Alternative**: Install legacy docker-compose: `sudo apt install docker-compose`
 
 ### Issue: Logo still not showing
 - **Cause**: Browser cache
@@ -95,3 +113,18 @@ curl -I https://yard-quest.com/logo.png
 ### Issue: "Image not found" but container is running
 - **Cause**: File not copied to container
 - **Fix**: Check .dockerignore doesn't exclude PNG files (it doesn't)
+
+### Issue: Container won't stop
+- **Cause**: Multiple containers with same name or orphaned containers
+- **Fix**:
+  ```bash
+  # List all containers
+  docker ps -a
+
+  # Force remove specific container
+  docker rm -f yard-quest-website
+
+  # Or stop all and rebuild
+  docker compose down --remove-orphans
+  docker compose up -d
+  ```
