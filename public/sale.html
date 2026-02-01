@@ -159,17 +159,21 @@
         const pathParts = window.location.pathname.split('/');
         const saleId = pathParts[pathParts.length - 1];
 
-        // Attempt to open the app via deep link
-        // The deep link will be handled by iOS Universal Links or Android App Links
-        // If the app is installed, it will open automatically
-        // If not, we'll show the fallback after a timeout
+        // If Universal Links didn't intercept, try the custom URL scheme
+        // This handles cases where AASA is cached incorrectly or not yet verified
+        const customSchemeUrl = 'yardquest://sale/' + saleId;
+
+        // Small delay to let Universal Links fire first
+        setTimeout(() => {
+            window.location.href = customSchemeUrl;
+        }, 100);
 
         // Show fallback after 3 seconds if app doesn't open
         const fallbackTimeout = setTimeout(() => {
             document.getElementById('loading').style.display = 'none';
-            document.getElementById('tagline').textContent = 'App Coming Soon';
+            document.getElementById('tagline').textContent = 'Get the Yard Quest App';
             document.getElementById('message').textContent =
-                'The Yard Quest app will be available soon. Check back later to view this sale and discover amazing yard sales near you!';
+                'Download the Yard Quest app to view this sale and discover amazing yard sales near you!';
             document.getElementById('fallback').style.display = 'block';
         }, 3000);
 
