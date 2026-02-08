@@ -1,6 +1,13 @@
 {
-  "currentVersion": "1.0.0",
+  "currentVersion": "2.0.0",
   "versions": [
+    {
+      "version": "2.0.0",
+      "url": "https://yard-quest.com/legal/terms/v2.0.0.html",
+      "effectiveDate": "2026-02-07T00:00:00Z",
+      "publishedAt": "2026-02-07T00:00:00Z",
+      "changeSummary": "Added account deletion rights and data handling procedures. Added individual item listing terms. Updated contact method to in-app support. Added listing types section."
+    },
     {
       "version": "1.0.0",
       "url": "https://yard-quest.com/legal/terms/v1.0.0.html",

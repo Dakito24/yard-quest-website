@@ -1,6 +1,13 @@
 {
-  "currentVersion": "1.1.0",
+  "currentVersion": "1.2.0",
   "versions": [
+    {
+      "version": "1.2.0",
+      "url": "https://yard-quest.com/legal/privacy/v1.2.0.html",
+      "effectiveDate": "2026-02-07T00:00:00Z",
+      "publishedAt": "2026-02-07T00:00:00Z",
+      "changeSummary": "Updated contact method to in-app support channels. Added account deletion details and data handling procedures. Updated data retention section. Added individual item listings to sale listing information."
+    },
     {
       "version": "1.1.0",
       "url": "https://yard-quest.com/legal/privacy/v1.1.0.html",
